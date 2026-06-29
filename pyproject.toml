@@ -1,0 +1,34 @@
+# pyproject.toml -- makes `pip install -e .` work so that `import stream_capture`
+# resolves anywhere, without the sys.path hack the scripts currently use.
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stream-capture"
+dynamic = ["version"]
+description = "Streaming-only, drop-in cv2.VideoCapture replacement with selectable decode backends (CPU, CUDA/NVDEC, OpenCV, DeepStream)."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Dhiyaa" }]
+# license = { text = "MIT" }   # pick a license and uncomment
+
+dependencies = [
+    "numpy",
+]
+
+# The decode backends rely on system / third-party components NOT installed by
+# pip here (see README "Requirements"):
+#   - GStreamer backends (cpu/cuda/opencv) : system GStreamer + PyGObject
+#   - opencv_gst                           : an OpenCV built WITH GStreamer
+#   - deepstream                           : DeepStream SDK + pyservicemaker + torch
+[project.optional-dependencies]
+gstreamer = ["PyGObject"]   # works only if system GStreamer dev libs are present
+deepstream = ["torch"]      # pyservicemaker ships with the DeepStream SDK, not PyPI
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = { attr = "stream_capture.__version__" }
