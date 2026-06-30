@@ -12,7 +12,7 @@ description = "Streaming-only, drop-in cv2.VideoCapture replacement with selecta
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{ name = "Dhiyaa" }]
-# license = { text = "MIT" }   # pick a license and uncomment
+
 
 dependencies = [
     "numpy",
